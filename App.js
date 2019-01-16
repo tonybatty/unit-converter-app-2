@@ -10,10 +10,13 @@ export default class App extends React.Component {
       unitFromSelected: "Meter",
       unitToSelected: "Yard",
       unitsFrom: [],
-      unitsTo: []
+      unitsTo: [],
+      unitFromInput: "",
+      unitToInput: ""
     };
 
     this.changeUnitType = this.changeUnitType.bind(this);
+    this.getUnitFromInput = this.getUnitFromInput.bind(this);
   }
 
   changeUnitType(itemValue, itemIndex) {
@@ -21,6 +24,12 @@ export default class App extends React.Component {
       unitType: itemValue,
       unitsFrom: convert().list(itemValue),
       unitsTo: convert().list(itemValue)
+    });
+  }
+
+  getUnitFromInput(itemValue, itemIndex) {
+    this.setState({
+      unitFromInput: itemValue
     });
   }
 
@@ -58,6 +67,9 @@ export default class App extends React.Component {
               }}
               defaultValue="1"
               keyboardType="numeric"
+              onValueChange={(itemValue, itemIndex) =>
+                this.getUnitFromInput(itemValue, itemIndex)
+              }
             />
             <Picker
               selectedValue={this.state.unitsFromInput}
