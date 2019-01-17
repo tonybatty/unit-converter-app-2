@@ -17,7 +17,9 @@ export default class App extends React.Component {
 
     this.changeUnitType = this.changeUnitType.bind(this);
     this.getUnitFromInput = this.getUnitFromInput.bind(this);
+    this.getUnitFromType = this.getUnitFromType.bind(this);
     this.getUnitToInput = this.getUnitToInput.bind(this);
+    this.getUnitToType = this.getUnitToType.bind(this);
   }
 
   componentDidMount() {
@@ -32,7 +34,7 @@ export default class App extends React.Component {
     });
   }
 
-  changeUnitType(itemValue, itemIndex) {
+  changeUnitType(itemValue) {
     this.setState({
       unitType: itemValue,
       unitsFrom: convert().list(itemValue),
@@ -43,7 +45,7 @@ export default class App extends React.Component {
     });
   }
 
-  getUnitFromInput(itemValue, itemIndex) {
+  getUnitFromInput(itemValue) {
     this.setState({
       unitFromInput: parseFloat(itemValue),
       unitToInput: convert(Number(itemValue))
@@ -52,11 +54,29 @@ export default class App extends React.Component {
     });
   }
 
-  getUnitToInput(itemValue, itemIndex) {
+  getUnitFromType(itemValue) {
+    this.setState({
+      unitFromSelected: itemValue,
+      unitToInput: convert(this.state.unitFromInput)
+        .from(itemValue)
+        .to(this.state.unitToSelected)
+    });
+  }
+
+  getUnitToInput(itemValue) {
     this.setState({
       unitToInput: parseFloat(itemValue),
-      unitFromInput: convert(Number(itemValue))
+      unitFromInput: convert(this.state.unitToInput)
         .from(this.state.unitToSelected)
+        .to(this.state.unitFromSelected)
+    });
+  }
+
+  getUnitToType(itemValue) {
+    this.setState({
+      unitToSelected: itemValue,
+      unitFromInput: convert(this.state.unitToInput)
+        .from(itemValue)
         .to(this.state.unitFromSelected)
     });
   }
@@ -69,9 +89,7 @@ export default class App extends React.Component {
             <Picker
               selectedValue={this.state.unitType}
               style={{ height: 50, flex: 1, borderWidth: 1 }}
-              onValueChange={(itemValue, itemIndex) =>
-                this.changeUnitType(itemValue, itemIndex)
-              }
+              onValueChange={itemValue => this.changeUnitType(itemValue)}
             >
               {convert()
                 .measures()
@@ -96,16 +114,12 @@ export default class App extends React.Component {
               defaultValue="1"
               keyboardType="numeric"
               value={String(this.state.unitFromInput)}
-              onChangeText={(itemValue, itemIndex) =>
-                this.getUnitFromInput(itemValue, itemIndex)
-              }
+              onChangeText={itemValue => this.getUnitFromInput(itemValue)}
             />
             <Picker
               selectedValue={this.state.unitFromSelected}
               style={{ height: 48, flex: 1, borderWidth: 1 }}
-              onValueChange={(itemValue, itemIndex) =>
-                this.setState({ unitFromSelected: itemValue })
-              }
+              onValueChange={itemValue => this.getUnitFromType(itemValue)}
             >
               {this.state.unitsFrom.map(unitType => (
                 <Picker.Item
@@ -127,16 +141,12 @@ export default class App extends React.Component {
               }}
               keyboardType="numeric"
               value={String(this.state.unitToInput)}
-              onChangeText={(itemValue, itemIndex) =>
-                this.getUnitToInput(itemValue, itemIndex)
-              }
+              onChangeText={itemValue => this.getUnitToInput(itemValue)}
             />
             <Picker
               selectedValue={this.state.unitToSelected}
               style={{ height: 48, flex: 1, borderWidth: 1 }}
-              onValueChange={(itemValue, itemIndex) =>
-                this.setState({ unitToSelected: itemValue })
-              }
+              onValueChange={itemValue => this.getUnitToType(itemValue)}
             >
               {this.state.unitsTo.map(unitType => (
                 <Picker.Item
