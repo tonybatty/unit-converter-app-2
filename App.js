@@ -6,9 +6,9 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      unitType: "length",
-      unitFromSelected: "Meter",
-      unitToSelected: "Yard",
+      unitType: "",
+      unitFromSelected: "",
+      unitToSelected: "",
       unitsFrom: [],
       unitsTo: [],
       unitFromInput: "",
@@ -17,19 +17,47 @@ export default class App extends React.Component {
 
     this.changeUnitType = this.changeUnitType.bind(this);
     this.getUnitFromInput = this.getUnitFromInput.bind(this);
+    this.getUnitToInput = this.getUnitToInput.bind(this);
+  }
+
+  componentDidMount() {
+    this.setState({
+      unitType: "length",
+      unitFromSelected: "mm",
+      unitToSelected: "cm",
+      unitsFrom: convert().list("length"),
+      unitsTo: convert().list("length"),
+      unitFromInput: "1",
+      unitToInput: "0"
+    });
   }
 
   changeUnitType(itemValue, itemIndex) {
     this.setState({
       unitType: itemValue,
       unitsFrom: convert().list(itemValue),
-      unitsTo: convert().list(itemValue)
+      unitsTo: convert().list(itemValue),
+      unitToInput: convert(Number(itemValue))
+        .from(this.state.unitFromSelected)
+        .to(this.state.unitToSelected)
     });
   }
 
   getUnitFromInput(itemValue, itemIndex) {
     this.setState({
-      unitFromInput: itemValue
+      unitFromInput: parseFloat(itemValue),
+      unitToInput: convert(Number(itemValue))
+        .from(this.state.unitFromSelected)
+        .to(this.state.unitToSelected)
+    });
+  }
+
+  getUnitToInput(itemValue, itemIndex) {
+    this.setState({
+      unitToInput: parseFloat(itemValue),
+      unitFromInput: convert(Number(itemValue))
+        .from(this.state.unitToSelected)
+        .to(this.state.unitFromSelected)
     });
   }
 
@@ -67,22 +95,23 @@ export default class App extends React.Component {
               }}
               defaultValue="1"
               keyboardType="numeric"
-              onValueChange={(itemValue, itemIndex) =>
+              value={String(this.state.unitFromInput)}
+              onChangeText={(itemValue, itemIndex) =>
                 this.getUnitFromInput(itemValue, itemIndex)
               }
             />
             <Picker
-              selectedValue={this.state.unitsFromInput}
+              selectedValue={this.state.unitFromSelected}
               style={{ height: 48, flex: 1, borderWidth: 1 }}
               onValueChange={(itemValue, itemIndex) =>
-                this.setState({ unitsFromSelected: itemValue })
+                this.setState({ unitFromSelected: itemValue })
               }
             >
               {this.state.unitsFrom.map(unitType => (
                 <Picker.Item
                   label={unitType.singular}
-                  value={unitType.singular}
-                  key={unitType.singular}
+                  value={unitType.abbr}
+                  key={unitType.abbr}
                 />
               ))}
             </Picker>
@@ -97,23 +126,41 @@ export default class App extends React.Component {
                 textAlign: "right"
               }}
               keyboardType="numeric"
+              value={String(this.state.unitToInput)}
+              onChangeText={(itemValue, itemIndex) =>
+                this.getUnitToInput(itemValue, itemIndex)
+              }
             />
             <Picker
-              selectedValue={this.state.unitsToInput}
+              selectedValue={this.state.unitToSelected}
               style={{ height: 48, flex: 1, borderWidth: 1 }}
               onValueChange={(itemValue, itemIndex) =>
-                this.setState({ unitsToSelected: itemValue })
+                this.setState({ unitToSelected: itemValue })
               }
             >
               {this.state.unitsTo.map(unitType => (
                 <Picker.Item
                   label={unitType.singular}
-                  value={unitType.singular}
-                  key={unitType.singular}
+                  value={unitType.abbr}
+                  key={unitType.abbr}
                 />
               ))}
             </Picker>
           </View>
+          <Text>
+            unitType: {this.state.unitType}
+            {"\n"}
+            unitFromSelected: {this.state.unitFromSelected}
+            {"\n"}
+            unitToSelected: {this.state.unitToSelected}
+            {"\n"}
+            {/* unitsFrom: {this.state.unitsFrom}{"\n"}
+          unitsTo: {this.state.unitsTo}{"\n"} */}
+            unitFromInput: {this.state.unitFromInput}
+            {"\n"}
+            unitToInput: {this.state.unitToInput}
+            {"\n"}
+          </Text>
         </View>
       </View>
     );
