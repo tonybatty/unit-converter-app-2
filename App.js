@@ -46,9 +46,17 @@ export default class App extends React.Component {
   }
 
   getUnitFromInput(itemValue) {
+    let unitFromInput = itemValue;
+
+    if (itemValue.length === 0) {
+      unitFromInput = 0;
+    } else {
+      unitFromInput = parseFloat(itemValue);
+    }
+
     this.setState({
-      unitFromInput: parseFloat(itemValue),
-      unitToInput: convert(Number(itemValue))
+      unitFromInput: unitFromInput,
+      unitToInput: convert(unitFromInput)
         .from(this.state.unitFromSelected)
         .to(this.state.unitToSelected)
     });
@@ -64,9 +72,17 @@ export default class App extends React.Component {
   }
 
   getUnitToInput(itemValue) {
+    let unitToInput = itemValue;
+
+    if (itemValue.length === 0) {
+      unitToInput = 0;
+    } else {
+      unitToInput = parseFloat(itemValue);
+    }
+
     this.setState({
-      unitToInput: parseFloat(itemValue),
-      unitFromInput: convert(this.state.unitToInput)
+      unitToInput: unitToInput,
+      unitFromInput: convert(unitToInput)
         .from(this.state.unitToSelected)
         .to(this.state.unitFromSelected)
     });
