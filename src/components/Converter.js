@@ -1,21 +1,29 @@
 import React from "react";
 import { StyleSheet, Text, TextInput, Picker, View } from "react-native";
 
-function Converter({}) {
+function Converter({
+  unitCategoryArr,
+  fromUnitsArr,
+  toUnitsArr,
+  unitCategory,
+  fromUnitValue,
+  fromUnit,
+  toUnitValue,
+  toUnit,
+  handleChange
+}) {
   return (
     <View style={styles.container}>
       <View style={styles.elementsContainer}>
         <View style={styles.inputGroup}>
           <Picker
-            selectedValue={this.state.unitType}
+            selectedValue={unitCategory}
             style={{ height: 50, flex: 1, borderWidth: 1 }}
-            onValueChange={itemValue => this.changeUnitType(itemValue)}
+            onValueChange={value => handleChange(value, "unitCategory")}
           >
-            {convert()
-              .measures()
-              .map(unitType => (
-                <Picker.Item label={unitType} value={unitType} key={unitType} />
-              ))}
+            {unitCategoryArr.map(unitType => (
+              <Picker.Item label={unitType} value={unitType} key={unitType} />
+            ))}
           </Picker>
         </View>
         <View style={styles.inputGroup}>
@@ -29,16 +37,15 @@ function Converter({}) {
             }}
             defaultValue="1"
             keyboardType="numeric"
-            onChangeText={itemValue => this.getUnitFromInput(itemValue)}
-            value={String(this.state.unitFromInput)}
+            onChangeText={value => handleChange(value, "fromUnitValue")}
+            value={String(fromUnitValue)}
           />
           <Picker
-            selectedValue={this.state.unitFromSelected}
+            selectedValue={fromUnit}
             style={{ height: 48, flex: 0.6, borderWidth: 1 }}
-            onValueChange={itemValue => this.getUnitFromType(itemValue)}
-            // value={this.state.unitFromSelected}
+            onValueChange={value => handleChange(value, "fromUnit")}
           >
-            {this.state.unitsFrom.map(unitType => (
+            {fromUnitsArr.map(unitType => (
               <Picker.Item
                 label={unitType.singular}
                 value={unitType.abbr}
@@ -57,16 +64,15 @@ function Converter({}) {
               textAlign: "right"
             }}
             keyboardType="numeric"
-            onChangeText={itemValue => this.getUnitToInput(itemValue)}
-            value={String(this.state.unitToInput)}
+            value={String(toUnitValue)}
+            onChangeText={value => handleChange(value, "toUnitValue")}
           />
           <Picker
-            selectedValue={this.state.unitToSelected}
+            selectedValue={toUnit}
             style={{ height: 48, flex: 0.6, borderWidth: 1 }}
-            onValueChange={itemValue => this.getUnitToType(itemValue)}
-            // Value={this.state.unitToSelected}
+            onValueChange={value => handleChange(value, "toUnit")}
           >
-            {this.state.unitsTo.map(unitType => (
+            {toUnitsArr.map(unitType => (
               <Picker.Item
                 label={unitType.singular}
                 value={unitType.abbr}
@@ -76,17 +82,15 @@ function Converter({}) {
           </Picker>
         </View>
         <Text>
-          unitType: {this.state.unitType}
+          unitCategory: {unitCategory}
           {"\n"}
-          unitFromSelected: {this.state.unitFromSelected}
+          fromUnit: {fromUnit}
           {"\n"}
-          unitToSelected: {this.state.unitToSelected}
+          fromUnitValue: {fromUnitValue}
           {"\n"}
-          {/* unitsFrom: {this.state.unitsFrom}{"\n"}
-          unitsTo: {this.state.unitsTo}{"\n"} */}
-          unitFromInput: {this.unitConverter.unitFromValue}
+          toUnit: {toUnit}
           {"\n"}
-          unitToInput: {this.state.unitToInput}
+          toUnitValue: {toUnitValue}
           {"\n"}
         </Text>
       </View>
@@ -95,26 +99,26 @@ function Converter({}) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: "#f2f2f2"
-    },
-    elementsContainer: {
-      flex: 1,
-      flexDirection: "column",
-      justifyContent: "center",
-      marginLeft: 24,
-      marginRight: 24,
-      marginBottom: 24,
-      marginTop: 24
-    },
-    inputGroup: {
-      width: "100%",
-      flexDirection: "row",
-      alignItems: "center",
-      marginTop: 12,
-      marginBottom: 12
-    }
-  });
+  container: {
+    flex: 1,
+    backgroundColor: "#f2f2f2"
+  },
+  elementsContainer: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "center",
+    marginLeft: 24,
+    marginRight: 24,
+    marginBottom: 24,
+    marginTop: 24
+  },
+  inputGroup: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 12,
+    marginBottom: 12
+  }
+});
 
 export default Converter;
