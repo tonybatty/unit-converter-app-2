@@ -22,9 +22,31 @@ export default class App extends React.Component {
   }
 
   handleChange(value, name) {
-    const newState = { ...this.state };
-    newState[name] = value;
-    newState.toUnitValue = convert(parseFloat(newState.fromUnitValue)).from(newState.fromUnit).to(newState.toUnit);
+    let newState = { ...this.state };
+
+    if (name === "unitCategory" && value !== newState.unitCategory) {
+      newState = {
+        fromUnitsArr: convert().list(value),
+        toUnitsArr: convert().list(value),
+        unitCategory: value,
+        fromUnitValue: "1",
+        fromUnit: convert().list(value)[0].abbr,
+        toUnitValue: "0",
+        toUnit: convert().list(value)[0].abbr
+      };
+    } else {
+      newState[name] = value;
+      newState.toUnitValue = convert(parseFloat(newState.fromUnitValue))
+        .from(newState.fromUnit)
+        .to(newState.toUnit);
+    }
+    // newState = {
+    //   toUnitsArr: convert()
+    //     .from(newState.fromUnitsArr[0].singular)
+    //     .possibilities(),
+    //   fromUnit: newState.fromUnitsArr[0].singular,
+    //   toUnit: newState.fromUnitsArr[0].singular
+    // };
     this.setState(newState);
   }
 
