@@ -37,13 +37,13 @@ function Converter({
             }}
             defaultValue="1"
             keyboardType="numeric"
-            onChangeText={value => handleChange(value, "fromUnitValue")}
+            onChangeText={value => handleChange(value, "fromUnitValue", true)}
             value={String(fromUnitValue)}
           />
           <Picker
             selectedValue={fromUnit}
             style={{ height: 48, flex: 0.6, borderWidth: 1 }}
-            onValueChange={value => handleChange(value, "fromUnit")}
+            onValueChange={value => handleChange(value, "fromUnit", true)}
           >
             {fromUnitsArr.map(unitType => (
               <Picker.Item
@@ -65,12 +65,12 @@ function Converter({
             }}
             keyboardType="numeric"
             value={String(toUnitValue)}
-            onChangeText={value => handleChange(value, "toUnitValue")}
+            onChangeText={value => handleChange(value, "toUnitValue", false)}
           />
           <Picker
             selectedValue={toUnit}
             style={{ height: 48, flex: 0.6, borderWidth: 1 }}
-            onValueChange={value => handleChange(value, "toUnit")}
+            onValueChange={value => handleChange(value, "toUnit", false)}
           >
             {toUnitsArr.map(unitType => (
               <Picker.Item
@@ -82,6 +82,10 @@ function Converter({
           </Picker>
         </View>
         <Text>
+          {"\n"}
+          {"\n"}
+          State:
+          {"\n"}
           unitCategory: {unitCategory}
           {"\n"}
           fromUnit: {fromUnit}

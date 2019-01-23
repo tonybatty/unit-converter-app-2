@@ -21,7 +21,7 @@ export default class App extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(value, name) {
+  handleChange(value, name, convertFrom) {
     let newState = { ...this.state };
 
     if (name === "unitCategory" && value !== newState.unitCategory) {
@@ -32,21 +32,22 @@ export default class App extends React.Component {
         fromUnitValue: "1",
         fromUnit: convert().list(value)[0].abbr,
         toUnitValue: "0",
-        toUnit: convert().list(value)[0].abbr
+        toUnit: convert().list(value)[1].abbr
       };
     } else {
       newState[name] = value;
+    }
+
+    if (convertFrom === true) {
       newState.toUnitValue = convert(parseFloat(newState.fromUnitValue))
         .from(newState.fromUnit)
         .to(newState.toUnit);
+    } else {
+      newState.fromUnitValue = convert(parseFloat(newState.toUnitValue))
+        .from(newState.toUnit)
+        .to(newState.fromUnit);
     }
-    // newState = {
-    //   toUnitsArr: convert()
-    //     .from(newState.fromUnitsArr[0].singular)
-    //     .possibilities(),
-    //   fromUnit: newState.fromUnitsArr[0].singular,
-    //   toUnit: newState.fromUnitsArr[0].singular
-    // };
+
     this.setState(newState);
   }
 
