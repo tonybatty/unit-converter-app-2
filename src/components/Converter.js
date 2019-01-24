@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { StyleSheet, Text, TextInput, Picker, View } from "react-native";
 
 function Converter({
@@ -38,7 +39,7 @@ function Converter({
             defaultValue="1"
             keyboardType="numeric"
             onChangeText={value => handleChange(value, "fromUnitValue", true)}
-            value={String(fromUnitValue)}
+            value={fromUnitValue}
           />
           <Picker
             selectedValue={fromUnit}
@@ -64,7 +65,7 @@ function Converter({
               textAlign: "right"
             }}
             keyboardType="numeric"
-            value={String(toUnitValue)}
+            value={toUnitValue}
             onChangeText={value => handleChange(value, "toUnitValue", false)}
           />
           <Picker
@@ -124,5 +125,17 @@ const styles = StyleSheet.create({
     marginBottom: 12
   }
 });
+
+Converter.propTypes = {
+  unitCategoryArr: PropTypes.array,
+  fromUnitsArr: PropTypes.array,
+  toUnitsArr: PropTypes.array,
+  unitCategory: PropTypes.string,
+  fromUnitValue: PropTypes.string,
+  fromUnit: PropTypes.string,
+  toUnitValue: PropTypes.string,
+  toUnit: PropTypes.string,
+  handleChange: PropTypes.func
+};
 
 export default Converter;

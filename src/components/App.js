@@ -14,7 +14,7 @@ export default class App extends React.Component {
       unitCategory: "length",
       fromUnitValue: "1",
       fromUnit: "mm",
-      toUnitValue: "",
+      toUnitValue: "0",
       toUnit: "cm"
     };
 
@@ -31,7 +31,7 @@ export default class App extends React.Component {
         unitCategory: value,
         fromUnitValue: "1",
         fromUnit: convert().list(value)[0].abbr,
-        toUnitValue: "0",
+        toUnitValue: "",
         toUnit: convert().list(value)[1].abbr
       };
     } else {
@@ -39,13 +39,17 @@ export default class App extends React.Component {
     }
 
     if (convertFrom === true) {
-      newState.toUnitValue = convert(parseFloat(newState.fromUnitValue))
-        .from(newState.fromUnit)
-        .to(newState.toUnit);
+      newState.toUnitValue = String(
+        convert(parseFloat(newState.fromUnitValue))
+          .from(newState.fromUnit)
+          .to(newState.toUnit)
+      );
     } else {
-      newState.fromUnitValue = convert(parseFloat(newState.toUnitValue))
-        .from(newState.toUnit)
-        .to(newState.fromUnit);
+      newState.fromUnitValue = String(
+        convert(parseFloat(newState.toUnitValue))
+          .from(newState.toUnit)
+          .to(newState.fromUnit)
+      );
     }
 
     this.setState(newState);
