@@ -20,7 +20,7 @@ function Converter({
           <Picker
             selectedValue={unitCategory}
             style={{ height: 50, flex: 1, borderWidth: 1 }}
-            onValueChange={value => handleChange(value, "unitCategory")}
+            onValueChange={value => handleChange(value, "unitCategory", null)}
           >
             {unitCategoryArr.map(unitType => (
               <Picker.Item label={unitType} value={unitType} key={unitType} />
@@ -71,7 +71,7 @@ function Converter({
           <Picker
             selectedValue={toUnit}
             style={{ height: 48, flex: 0.6, borderWidth: 1 }}
-            onValueChange={value => handleChange(value, "toUnit", false)}
+            onValueChange={value => handleChange(value, "toUnit", true)}
           >
             {toUnitsArr.map(unitType => (
               <Picker.Item
